@@ -1,0 +1,7 @@
+body {
+  color: hsl(0, 0%, 20%);
+  padding: 2rem;
+  max-width: 60rem;
+  margin: auto;
+  font-size: 1.4rem;
+}
