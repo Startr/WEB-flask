@@ -1,2 +1,2 @@
 # WEB-flask
-A Python starter web application built with flask and a little love.
+A Python startr web application built with flask and a little love.
