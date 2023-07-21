@@ -1,2 +1,3 @@
 # WEB-flask
-A Python startr web application built with flask and a little love.
+A Python startr web application built with Flask and a little love... oh
+and SWUP for smooth page transitions. 
