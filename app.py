@@ -34,7 +34,7 @@ def submit_form():
         cv_filename = f"{email_filename}.pdf"
         cv.save(os.path.join('uploads', cv_filename))
 
-    return 'Thank you for submitting!'
+    return '    <main id="swup" class="transition-fade">Thank you for submitting! <a href="/?reset"> Submit another.</a></main>'
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000)
