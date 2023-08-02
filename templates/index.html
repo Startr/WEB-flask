@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Contact - Form</title>
-    <script src="{{ url_for('static', filename='js/swup.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/swup-forms-plugin.min.js') }}"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  </head>
-  <body>
-    <h1>Contact Form</h1>
-    <main id="swup" class="transition-fade">
+{% extends "layout.html" %}
+{% block title %}Contact - Form{% endblock %}
+{% block content %}
       <h2>Submit your CV</h2>
       <p>Fill out the form below to submit your CV.</p>
       <p>Only PDF files are allowed.</p>
@@ -21,17 +13,5 @@
         <input type="file" id="cv" name="cv" accept=".pdf" required><br><br>
         <input type="submit" value="Submit">
       </form>
-    </main>
-
-    <script>
-      const swup = new Swup({
-        plugins: [new SwupFormsPlugin({
-          formSelector: 'form'
-        })]
-      });
-    </script>
-
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-  </body>
-</html>
+{% endblock %}
 

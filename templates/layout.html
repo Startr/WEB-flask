@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% block head %}
+    <title>{% block title %}Site{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <meta http-equiv="Permissions-Policy" content="interest-cohort=()">
+    <mete name="description" content="A simple website built with Flask and Swup.js" />
+    <meta name="keywords" content="flask, swup, swup.js, python, web development" />
+
+    <script src="{{ url_for('static', filename='js/swup.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/swup-forms-plugin.min.js') }}"></script>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    {% endblock %}
+  </head>
+  <body class="invisible">
+    <nav>
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <!-- only show these links if the user is not logged in -->
+      {% if not session._user_id %}
+      <a href="/register">Register</a>
+      <a href="/login">Login</a>
+      {% endif %}
+      <!-- only show these links if the user is logged in -->
+      {% if session._user_id %}
+      <a href="/dashboard">Dashboard</a>
+      <!-- only show if the user is not a pro user -->
+      {% if not session._user_account_type == "pro" %}
+      <a href="/upgrade">Upgrade</a>
+      {% endif %}
+      <a href="/logout" data-no-swup>Logout</a>
+      {% endif %}
+    </nav>
+    <main id="swup" class="transition-fade">
+      {% block content %} {% endblock %}
+    </main>
+
+    <script>
+      const swup = new Swup({
+        plugins: [
+          new SwupFormsPlugin({
+            formSelector: "form:not([data-no-swup])",
+          }),
+        ],
+      });
+    </script>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  </body>
+</html>

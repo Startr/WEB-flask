@@ -1,0 +1,13 @@
+<!-- templates/login.html -->
+{% extends "layout.html" %} {% block title %}Register{% endblock %} {% block
+content %}
+<h1>Login</h1>
+{% if message %}<h2>{{ message }}</h2>{% endif %}
+<form method="POST" data-no-swup>
+  <label for="email">Email</label>
+  <input type="email" id="email" name="email" required />
+  <label for="password">Password</label>
+  <input type="password" id="password" name="password" required />
+  <input type="submit" value="Login" />
+</form>
+{% endblock %}

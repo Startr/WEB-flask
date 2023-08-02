@@ -1,0 +1,15 @@
+<!-- templates/dashboard.html -->
+{% extends "layout.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>Dashboard</h1>
+
+<p>Welcome, {{ current_user.name }}!<br>
+    {{ message }} </p>
+
+<ul>
+    {% for route in routes %}
+    <li><a href="{{ route }}">{{ route }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}
