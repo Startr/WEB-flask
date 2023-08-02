@@ -15,24 +15,28 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}"
     />
+    <link
+      rel="stylesheet"
+      href="https://codepen.io/openco/pen/xxJYvgR.css"
+    />
     {% endblock %}
   </head>
   <body class="invisible">
     <nav>
-      <a href="/">Home</a>
-      <a href="/about">About</a>
-      <a href="/contact">Contact</a>
+      <a href="/">Home</a> - 
+      <a href="/about">About</a> -
+      <a href="/contact">Contact</a> -
       <!-- only show these links if the user is not logged in -->
       {% if not session._user_id %}
-      <a href="/register">Register</a>
+      <a href="/register">Register</a> -
       <a href="/login">Login</a>
       {% endif %}
       <!-- only show these links if the user is logged in -->
       {% if session._user_id %}
-      <a href="/dashboard">Dashboard</a>
+      <a href="/dashboard">Dashboard</a> -
       <!-- only show if the user is not a pro user -->
       {% if not session._user_account_type == "pro" %}
-      <a href="/upgrade">Upgrade</a>
+      <a href="/upgrade">Upgrade</a> -
       {% endif %}
       <a href="/logout" data-no-swup>Logout</a>
       {% endif %}
