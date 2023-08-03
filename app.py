@@ -106,6 +106,7 @@ def index():
     if request.method == 'POST':
         name = request.form.get('name')
         email = request.form.get('email')
+        job_description = request.form.get('job_description')
         cv = request.files.get('cv')  # Changed to use get method
 
         # Check if name and email are provided
@@ -114,15 +115,17 @@ def index():
 
         with open('contacts.csv', 'a', newline='') as file:
             writer = csv.writer(file)
-            writer.writerow([name, email])
+            writer.writerow([name, email, job_description])
 
         if cv:
             filename = secure_filename(cv.filename)
             email_filename = re.sub(r'@', '_at_', email)
-            cv_filename = f"{email_filename}.pdf"
+            # Get the cv sufix so we can add it to the filename
+            cv_sufix = filename.split('.')[-1]
+            cv_filename = f"{email_filename}.{cv_sufix}"
             cv.save(os.path.join('uploads', cv_filename))
 
-        return redirect(url_for('index', message="Thank you for submitting!"))
+        return swuped('Your application has been submitted.', link="/?submitted.", message="Submit another application.")
 
     return render_template('index.html', message=request.args.get('message'))
 
