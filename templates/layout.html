@@ -31,20 +31,21 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/startr.css') }}"
     />
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.ico') }}">
-    <script>
+    <link
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='favicon/favicon.ico') }}"
+    />
+    <script data-swup-ignore-script>
       const swup = new Swup({
         plugins: [
           new SwupFormsPlugin({
             formSelector: "form:not([data-no-swup])",
           }),
-          new SwupScriptsPlugin({
-            optin: true
-          }),
+          new SwupScriptsPlugin({ head: true, body: true }),
         ],
       });
     </script>
-
+    <script src="https://js.stripe.com/v3/" data-swup-ignore-script></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     {% endblock %}
   </head>

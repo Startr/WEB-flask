@@ -22,8 +22,7 @@ content %}
   <div id="payment-message" class="hidden"></div>
 </form>
 
-<script src="https://js.stripe.com/v3/"></script>
-<script>
+<script data-swup-reload-script>
   var stripe = Stripe("{{ stripe_publishable_key }}");
 
   const appearance = {
