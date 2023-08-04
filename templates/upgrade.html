@@ -25,10 +25,10 @@ content %}
 <script data-swup-reload-script>
   var stripe = Stripe("{{ stripe_publishable_key }}");
 
-  const appearance = {
+  var appearance = {
     /* appearance */
   };
-  const options = {
+  var options = {
     layout: {
       type: "accordion",
       defaultCollapsed: false,
@@ -36,13 +36,13 @@ content %}
       spacedAccordionItems: true,
     },
   };
-  const clientSecret = "{{ client_secret }}"; // Add the clientSecret here
+  var clientSecret = "{{ client_secret }}"; // Add the clientSecret here
 
   stripe.elements = stripe.elements(appearance);
   stripe.elements({ clientSecret: clientSecret });
 
-  const elements = stripe.elements({ clientSecret, appearance });
-  const paymentElement = elements.create("payment", options);
+  var elements = stripe.elements({ clientSecret, appearance });
+  var paymentElement = elements.create("payment", options);
   paymentElement.mount("#payment-element");
 
   // Handle form submission
@@ -54,7 +54,7 @@ content %}
     e.preventDefault();
     setLoading(true);
 
-    const { error } = await stripe.confirmPayment({
+    var { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
@@ -80,7 +80,7 @@ content %}
 
   // Fetches the payment intent status after payment submission
   async function checkStatus() {
-    const clientSecret = new URLSearchParams(window.location.search).get(
+    var clientSecret = new URLSearchParams(window.location.search).get(
       "payment_intent_client_secret"
     );
 
@@ -88,7 +88,7 @@ content %}
       return;
     }
 
-    const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
+    var { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
 
     switch (paymentIntent.status) {
       case "succeeded":
@@ -109,7 +109,7 @@ content %}
   // ------- UI helpers -------
 
   function showMessage(messageText) {
-    const messageContainer = document.querySelector("#payment-message");
+    var messageContainer = document.querySelector("#payment-message");
 
     messageContainer.classList.remove("hidden");
     messageContainer.textContent = messageText;
