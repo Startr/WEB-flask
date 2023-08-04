@@ -125,7 +125,7 @@ def index():
             cv_filename = f"{email_filename}.{cv_sufix}"
             cv.save(os.path.join('uploads', cv_filename))
 
-        return swuped('Your application has been submitted.', link="/?submitted.", message="Submit another application.")
+        return swuped('Your application has been submitted.', link="/?submit_new_CV.", message="Submit another application.")
 
     return render_template('index.html', message=request.args.get('message'))
 
