@@ -22,7 +22,16 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}"
     />
-    <link rel="stylesheet" href="https://codepen.io/openco/pen/xxJYvgR.css" />
+    {# https://codepen.io/openco/pen/xxJYvgR.css Startr CSS Startr Style is a
+    utility-first CSS framework for rapidly building custom user interfaces.
+    Avoiding class bloat, Startr Style provides a minimal set of styles and
+    robust utilities using variables and logic to cover a wide variety of use
+    cases. #}
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/startr.css') }}"
+    />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.ico') }}">
     <script>
       const swup = new Swup({
         plugins: [
@@ -30,8 +39,7 @@
             formSelector: "form:not([data-no-swup])",
           }),
           new SwupScriptsPlugin({
-            head: false,
-            body: true,
+            optin: true
           }),
         ],
       });
@@ -51,7 +59,7 @@
       {% endif %}
       <!-- only show these links if the user is logged in -->
       {% if session._user_id %}
-      <a href="/dashboard">Dashboard</a> -
+      <a href="/dashboard">Dash</a> -
       <!-- only show if the user is not a pro user -->
       {% if not session._user_account_type == "pro" %}
       <a href="/upgrade">Upgrade</a> - {% endif %}
