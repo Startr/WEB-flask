@@ -26,20 +26,17 @@ content %}
   var stripe = Stripe("{{ stripe_publishable_key }}");
 
   var appearance = {
-    /* appearance */
+    /* Add Stripe theme here */
   };
   var options = {
     layout: {
       type: "accordion",
       defaultCollapsed: false,
-      radios: false,
+      radios: true,
       spacedAccordionItems: true,
     },
   };
   var clientSecret = "{{ client_secret }}"; // Add the clientSecret here
-
-  stripe.elements = stripe.elements(appearance);
-  stripe.elements({ clientSecret: clientSecret });
 
   var elements = stripe.elements({ clientSecret, appearance });
   var paymentElement = elements.create("payment", options);
@@ -59,7 +56,7 @@ content %}
       confirmParams: {
         // Make sure to change this to your payment completion page
         //return_url: "/upgrade?payment_intent_client_secret={{ client_secret }}&message=success",
-        return_url: "/pro_page",
+        return_url: "http://localhost:8000/pro_page",
         receipt_email: "{{ session._user_email }}",
       },
     });
