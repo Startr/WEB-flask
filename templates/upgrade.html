@@ -55,8 +55,8 @@ content %}
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        //return_url: "/upgrade?payment_intent_client_secret={{ client_secret }}&message=success",
-        return_url: "http://localhost:8000/pro_page",
+        //return_url: "http://localhost:8000/upgrade?payment_intent_client_secret={{ client_secret }}&message=success",
+        return_url: "http://localhost:8000/upgrade?message=success",
         receipt_email: "{{ session._user_email }}",
       },
     });

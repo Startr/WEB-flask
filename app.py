@@ -214,8 +214,8 @@ def dashboard():
 @app.route('/upgrade', methods=['GET', 'POST'])
 @login_required
 def upgrade():
-    if request.method == 'POST':
-        payment_intent_id = request.form['payment_intent_id']
+    if request.args.get('payment_intent'):
+        payment_intent_id = request.args.get('payment_intent')
         payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
 
         if payment_intent.status == 'succeeded':
@@ -224,19 +224,38 @@ def upgrade():
             return swuped('You are now a pro user.', link="/pro_page", message="Go to the pro page.")
 
     else:
+        # Ask stripe for customer id based on email
+        stripe_customer_list = stripe.Customer.list(email=current_user.email)
+        # If customer exists, get the id
+        if stripe_customer_list['data']:
+            stripe_customer_id = stripe_customer_list['data'][0]['id']
+        # If customer doesn't exist, create a new one
+        else:
+            new_customer = stripe.Customer.create(email=current_user.email)
+            # Set the customer id to the new customer id
+            stripe_customer_id = new_customer['id']
+
         # create a new PaymentIntent for the upgrade fee
         payment_intent = stripe.PaymentIntent.create(
-            amount=5000,  # $50, amount is in cents
+            #get the amount from the .env file and convert it to cents
+            amount = int(float(os.getenv("PRO_PRICE")) * 100),
+            customer=stripe_customer_id,
+            receipt_email=current_user.email,
+            # amount=calculate_order_amount(data['items']),
             currency='usd',
+            automatic_payment_methods={
+                'enabled': True,
+            }
         )
     return render_template('upgrade.html', client_secret=payment_intent.client_secret, stripe_publishable_key=os.getenv("STRIPE_PUBLISHABLE_KEY"))
 
 
+"""
 def calculate_order_amount(items):
     # Replace this constant with a calculation of the order's amount
     # Calculate the order total on the server to prevent
     # people from directly manipulating the amount on the client
-    return 1400
+    return 140
 
 # Stripe payment intent endpoint
 @app.route('/create-payment-intent', methods=['POST'])
@@ -245,6 +264,8 @@ def create_payment():
         data = json.loads(request.data)
         # Create a PaymentIntent with the order amount and currency
         intent = stripe.PaymentIntent.create(
+            customer=current_user.id,
+            receipt_email=current_user.email,
             amount=calculate_order_amount(data['items']),
             currency='usd',
             automatic_payment_methods={
@@ -256,6 +277,7 @@ def create_payment():
         })
     except Exception as e:
         return jsonify(error=str(e)), 403
+"""
 
 
 @app.route('/free_page')
@@ -271,7 +293,7 @@ def free_page():
 @login_required
 def pro_page():
     if current_user.account_type == 'pro':
-        return swuped('This is the pro page. ' + str(current_user) , link="/dashboard", message="Go to the dash")
+        return swuped('This is the pro page. ' + str(current_user), link="/dashboard", message="Go to the dash")
 
     else:
         return redirect(url_for('upgrade'))
