@@ -30,7 +30,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 
 db = SQLAlchemy(app)
 
-# Create uploads directory if it doesn't exist
 if not os.path.exists('uploads'):
     os.makedirs('uploads')
 
@@ -67,7 +66,6 @@ def swuped(content, link="/dashboard", message="Go to the dash"):
     """
     Wrap html in swup div to allow for simple page transitions of content.
 
-    Arguments:
     content -- html to display
     link -- link to another page
     message -- anchor text for link
@@ -103,8 +101,7 @@ def index():
         job_description = request.form.get('job_description')
         cv = request.files.get('cv')  # Changed to use get method
 
-        # Check if name and email are provided
-        if not name or not email:
+        if not name or not email:  # Check if name and email are provided
             return redirect(url_for('index', message="Please provide both your name and email."))
 
         with open('contacts.csv', 'a', newline='') as file:
@@ -114,7 +111,6 @@ def index():
         if cv:
             filename = secure_filename(cv.filename)
             email_filename = re.sub(r'@', '_at_', email)
-            # Get the cv sufix so we can add it to the filename
             cv_sufix = filename.split('.')[-1]
             cv_filename = f"{email_filename}.{cv_sufix}"
             cv.save(os.path.join('uploads', cv_filename))
@@ -135,29 +131,23 @@ def contact():
 
 
 @app.route('/login', methods=['GET', 'POST'])
+@check_message
 def login():
     if request.method == 'POST':
-        # Get email and password from form
         email = request.form.get('email')
         password = request.form.get('password')
 
-        # Find user by email
         user = User.query.filter_by(email=email).first()
 
-        # Check password
         if not user or not check_password_hash(user.password, password):
             return redirect(url_for('login', message="Incorrect email or password."))
 
-        # Login user
         login_user(user)
 
-        # Redirect to dashboard
         return redirect(url_for('dashboard', message="You have been logged in."))
     # Get message from query string
     message = request.args.get('message')
     return render_template('login.html', message=message)
-
-# Logout route
 
 
 @app.route('/logout')
@@ -189,7 +179,6 @@ def register():
     return render_template('register.html', message=message)
 
 
-# Redirect @login_required when not logged in to login page
 @login_manager.unauthorized_handler
 def unauthorized_callback():
     return redirect(url_for('login', message='You must be logged in to view that page.'))
@@ -226,15 +215,13 @@ def upgrade():
         # If customer exists, get the id
         if stripe_customer_list['data']:
             stripe_customer_id = stripe_customer_list['data'][0]['id']
-        # If customer doesn't exist, create a new one
         else:
             new_customer = stripe.Customer.create(email=current_user.email)
             stripe_customer_id = new_customer['id']
 
         # create a new PaymentIntent for the upgrade fee
         payment_intent = stripe.PaymentIntent.create(
-            # get the amount from the .env file and convert it to cents
-            amount=int(float(os.getenv("PRO_PRICE")) * 100),
+            amount=int(float(os.getenv("PRO_PRICE")) * 100),  # price from .env
             customer=stripe_customer_id,
             receipt_email=current_user.email,
             currency='usd',
