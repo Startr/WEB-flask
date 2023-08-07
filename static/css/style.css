@@ -1,9 +1,13 @@
 body {
   color: hsl(0, 0%, 20%);
-  padding: 2rem;
   max-width: 60rem;
   margin: auto;
   font-size: 1.4rem;
+  transition: 0.4s;
+}
+
+nav,main,footer {
+  margin: 1rem 2rem;
 }
 
 .transition-fade {
@@ -13,4 +17,20 @@ body {
 
 html.is-animating .transition-fade {
   opacity: 0;
+}
+
+@keyframes fading {
+  from {
+      opacity: 0;
+  }
+  to {
+       opacity: 1;   
+  }
+}
+
+.invisible {
+  opacity: 0;
+  animation: fading ease-in-out 0.4s;
+  animation-fill-mode: forwards;
+ /* animation-duration: 0.4s; */
 }
