@@ -12,9 +12,6 @@ import os
 import re
 import stripe
 
-from flask_cloudflared import run_with_cloudflared
-
-
 config = {
     "DEBUG": True,  # run app in debug mode
     "SQLALCHEMY_DATABASE_URI": "sqlite:///db.sqlite"  # connect to database
@@ -32,9 +29,6 @@ app.config.from_mapping(config)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 
 db = SQLAlchemy(app)
-
-# if app.config['DEBUG']:
-#    run_with_cloudflared(app)
 
 # Create uploads directory if it doesn't exist
 if not os.path.exists('uploads'):
@@ -61,22 +55,6 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-class User(UserMixin, db.Model):
-    __tablename__ = 'user'
-    __table_args__ = {'extend_existing': True}
-
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(100), unique=True)
-    password = db.Column(db.String(100))
-    name = db.Column(db.String(1000))
-    account_type = db.Column(db.String(100))
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-
-
 def check_message(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -88,15 +66,31 @@ def check_message(f):
 def swuped(content, link="/dashboard", message="Go to the dash"):
     """
     Wrap html in swup div to allow for simple page transitions of content.
+
+    Arguments:
     content -- html to display
     link -- link to another page
     message -- anchor text for link
+    note -- optional note to display coming from query string
     """
+    note = request.args.get('message')
+
     return f"""
+<html>
+  <head>
+    <title>{content}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/startr.css">
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body>
     <main id="swup" class="transition-fade">
-        <h1>{content}</h1>
+        <h2>{content}</h2>
+        {'<h3>' + note + '</h3>' if note else ''}
         <a href="{link}">{message}</a>
     </main>
+  </body>
+</html>
     """
 
 
@@ -214,6 +208,9 @@ def dashboard():
 @app.route('/upgrade', methods=['GET', 'POST'])
 @login_required
 def upgrade():
+    # If user is already a pro user, redirect to pro page
+    if current_user.account_type == 'pro':
+        return redirect(url_for('pro_page', message="You are already a pro user."))
     if request.args.get('payment_intent'):
         payment_intent_id = request.args.get('payment_intent')
         payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
@@ -232,52 +229,20 @@ def upgrade():
         # If customer doesn't exist, create a new one
         else:
             new_customer = stripe.Customer.create(email=current_user.email)
-            # Set the customer id to the new customer id
             stripe_customer_id = new_customer['id']
 
         # create a new PaymentIntent for the upgrade fee
         payment_intent = stripe.PaymentIntent.create(
-            #get the amount from the .env file and convert it to cents
-            amount = int(float(os.getenv("PRO_PRICE")) * 100),
+            # get the amount from the .env file and convert it to cents
+            amount=int(float(os.getenv("PRO_PRICE")) * 100),
             customer=stripe_customer_id,
             receipt_email=current_user.email,
-            # amount=calculate_order_amount(data['items']),
             currency='usd',
             automatic_payment_methods={
                 'enabled': True,
             }
         )
     return render_template('upgrade.html', client_secret=payment_intent.client_secret, stripe_publishable_key=os.getenv("STRIPE_PUBLISHABLE_KEY"))
-
-
-"""
-def calculate_order_amount(items):
-    # Replace this constant with a calculation of the order's amount
-    # Calculate the order total on the server to prevent
-    # people from directly manipulating the amount on the client
-    return 140
-
-# Stripe payment intent endpoint
-@app.route('/create-payment-intent', methods=['POST'])
-def create_payment():
-    try:
-        data = json.loads(request.data)
-        # Create a PaymentIntent with the order amount and currency
-        intent = stripe.PaymentIntent.create(
-            customer=current_user.id,
-            receipt_email=current_user.email,
-            amount=calculate_order_amount(data['items']),
-            currency='usd',
-            automatic_payment_methods={
-                'enabled': True,
-            },
-        )
-        return jsonify({
-            'clientSecret': intent['client_secret']
-        })
-    except Exception as e:
-        return jsonify(error=str(e)), 403
-"""
 
 
 @app.route('/free_page')
