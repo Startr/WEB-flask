@@ -2,7 +2,7 @@
 
 # Your Startr Web App
 
-v0.0.1
+v0.1.0
 
 # WEB-Flask: 256 Lines of Python Goodness 🚀
 
