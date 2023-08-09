@@ -92,31 +92,9 @@ def swuped(content, link="/dashboard", message="Go to the dash"):
     """
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 @check_message
 def index():
-    if request.method == 'POST':
-        name = request.form.get('name')
-        email = request.form.get('email')
-        job_description = request.form.get('job_description')
-        cv = request.files.get('cv')  # Changed to use get method
-
-        if not name or not email:  # Check if name and email are provided
-            return redirect(url_for('index', message="Please provide both your name and email."))
-
-        with open('contacts.csv', 'a', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow([name, email, job_description])
-
-        if cv:
-            filename = secure_filename(cv.filename)
-            email_filename = re.sub(r'@', '_at_', email)
-            cv_sufix = filename.split('.')[-1]
-            cv_filename = f"{email_filename}.{cv_sufix}"
-            cv.save(os.path.join('uploads', cv_filename))
-
-        return swuped('Your application has been submitted.', link="/?submit_new_CV.", message="Submit another application.")
-
     return render_template('index.html', message=request.args.get('message'))
 
 
@@ -232,13 +210,33 @@ def upgrade():
     return render_template('upgrade.html', client_secret=payment_intent.client_secret, stripe_publishable_key=os.getenv("STRIPE_PUBLISHABLE_KEY"))
 
 
-@app.route('/free_page')
+@app.route('/free_page', methods=['GET', 'POST'])
 @check_message
 @login_required
 def free_page():
-    # return '   <main id="swup" class="transition-fade">This is the free page. <a href="/">Go back.</a></main>'
-    return swuped('This is the free page.', link="/pro_page", message="Go Pro for more!")
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        job_description = request.form.get('job_description')
+        cv = request.files.get('cv')  # Changed to use get method
 
+        if not name or not email:  # Check if name and email are provided
+            return redirect(url_for('index', message="Please provide both your name and email."))
+
+        with open('contacts.csv', 'a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow([name, email, job_description])
+
+        if cv:
+            filename = secure_filename(cv.filename)
+            email_filename = re.sub(r'@', '_at_', email)
+            cv_sufix = filename.split('.')[-1]
+            cv_filename = f"{email_filename}.{cv_sufix}"
+            cv.save(os.path.join('uploads', cv_filename))
+
+        return swuped('Your application has been submitted.', link="/?submit_new_CV.", message="Submit another application.")
+
+    return render_template('free_page.html', message=request.args.get('message'))
 
 @app.route('/pro_page')
 @check_message
@@ -252,4 +250,6 @@ def pro_page():
 
 
 if __name__ == '__main__':
+    app.jinja_env.auto_reload = True
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.run(host='0.0.0.0', port=8000)

@@ -1,9 +1,12 @@
 {% extends "layout.html" %} {% block title %}Contact - Form{% endblock %} {%
 block content %}
 <h2>Submit your CV</h2>
-<p>Fill out the form below to submit your CV.</p>
+<p>
+  Fill out the form below to submit your CV. Or use our
+  <a href="/pro_page">Pro-Features for even more options.</a>
+</p>
 
-<form action="/free_page" method="POST" enctype="multipart/form-data">
+<form action="/#submit" method="POST" enctype="multipart/form-data">
   <label for="name">Name:</label>
   <input type="text" id="name" name="name" required />
   <label for="email">Email:</label>
@@ -19,4 +22,12 @@ block content %}
   <input type="file" id="cv" name="cv" accept=".pdf,.docx" required />
   <input type="submit" value="Submit" />
 </form>
+
+<p> Pro users can also use the following features:</p>
+<ul>
+  <li>Upload multiple CVs a month.</li>
+  <li>Use the AI CV creation tool.</li>
+  <li>Talk to our AI CV assistant.</li>
+</ul>
+<a href="/pro_page">Go Pro Now!</a>
 {% endblock %}

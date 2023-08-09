@@ -67,13 +67,16 @@
       {% endif %}
       <!-- only show these links if the user is logged in -->
       {% if session._user_id %}
-      <a href="/dashboard">Dash</a> -
+      <a href="/free_page">Process CV</a> - <a href="/dashboard">Dash</a> -
       <!-- only show if the user is not a pro user -->
       {% if not session._user_account_type == "pro" %}
-      <a href="/upgrade">Upgrade</a> - {% endif %}
+      <a href="/upgrade">Upgrade</a> - {% else %}
+      <a href="/pro_page">Pro Page</a> - {% endif %}
       <a href="/logout" data-no-swup>Logout</a>
       {% endif %}
     </nav>
+
+    {{ session._user_account_type }}
     <main id="swup" class="transition-fade">
       {% block content %} {% endblock %}
     </main>
