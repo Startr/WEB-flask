@@ -14,7 +14,7 @@ import stripe
 
 config = {
     "DEBUG": True,  # run app in debug mode
-    "SQLALCHEMY_DATABASE_URI": "sqlite:///db.sqlite"  # connect to database
+    "SQLALCHEMY_DATABASE_URI": "sqlite:////tmp/test.db"  # connect to database
 }
 
 
@@ -25,8 +25,6 @@ app = Flask(__name__, static_url_path='')
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
 
 app.config.from_mapping(config)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 
 db = SQLAlchemy(app)
 
@@ -73,23 +71,7 @@ def swuped(content, link="/dashboard", message="Go to the dash"):
     """
     note = request.args.get('message')
 
-    return f"""
-<html>
-  <head>
-    <title>{content}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/startr.css">
-    <link rel="stylesheet" href="/css/style.css">
-  </head>
-  <body>
-    <main id="swup" class="transition-fade">
-        <h2>{content}</h2>
-        {'<h3>' + note + '</h3>' if note else ''}
-        <a href="{link}">{message}</a>
-    </main>
-  </body>
-</html>
-    """
+    return render_template('swuped.html', content=content, link=link, message=message, note=note)
 
 
 @app.route('/')
