@@ -2,9 +2,9 @@
 
 # Your Startr Web App
 
-v0.1.0
+v0.2.0
 
-# WEB-Flask: 256 Lines of Python Goodness 🚀
+# WEB-Flask: less than 256 Lines of Python Goodness 🚀
 
 A simple yet powerful web application built with Flask and sprinkled with love... 
 
@@ -25,7 +25,7 @@ To begin, make sure you have Python installed on your machine. Clone this reposi
 
 We license our projects under the [AGPL-3.0](https://choosealicense.com/licenses/agpl-3.0/) license. This license allows you to use, modify, and distribute this work, as long as you give us credit and share any changes you make under the same license. Share your changes by opening a pull request.
 
-## Includes 🛠️
+## WEB-Flask Includes 🛠️
 
 Here's what you'll find in this awesome project:
 
@@ -44,9 +44,9 @@ Here's what you'll find in this awesome project:
 - 🔒 Logout
 - 📝 User registration
 
-## Step-by-Step Tutorial
+## More details
 
-To ensure you have a seamless experience using WEB-Flask, we've prepared a step-by-step tutorial below:
+To ensure you have a seamless experience using WEB-Flask, we've prepared a more detailed description below:
 
 1. **Installation:** First, follow the "Getting Started" section above to set up the environment and run the app locally.
 2. **Page Transitions:** Explore the super smooth page transitions and enjoy a seamless user experience.

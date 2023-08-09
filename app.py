@@ -14,7 +14,7 @@ import stripe
 
 config = {
     "DEBUG": True,  # run app in debug mode
-    "SQLALCHEMY_DATABASE_URI": "sqlite:///db.sqlite"  # connect to database
+    "SQLALCHEMY_DATABASE_URI": "sqlite:////tmp/test.db"  # connect to database
 }
 
 
@@ -26,7 +26,7 @@ app.secret_key = os.getenv("FLASK_SECRET_KEY")
 
 app.config.from_mapping(config)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+
 
 db = SQLAlchemy(app)
 
@@ -73,50 +73,12 @@ def swuped(content, link="/dashboard", message="Go to the dash"):
     """
     note = request.args.get('message')
 
-    return f"""
-<html>
-  <head>
-    <title>{content}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/startr.css">
-    <link rel="stylesheet" href="/css/style.css">
-  </head>
-  <body>
-    <main id="swup" class="transition-fade">
-        <h2>{content}</h2>
-        {'<h3>' + note + '</h3>' if note else ''}
-        <a href="{link}">{message}</a>
-    </main>
-  </body>
-</html>
-    """
+    return render_template('swuped.html', content=content, link=link, message=message, note=note)
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 @check_message
 def index():
-    if request.method == 'POST':
-        name = request.form.get('name')
-        email = request.form.get('email')
-        job_description = request.form.get('job_description')
-        cv = request.files.get('cv')  # Changed to use get method
-
-        if not name or not email:  # Check if name and email are provided
-            return redirect(url_for('index', message="Please provide both your name and email."))
-
-        with open('contacts.csv', 'a', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow([name, email, job_description])
-
-        if cv:
-            filename = secure_filename(cv.filename)
-            email_filename = re.sub(r'@', '_at_', email)
-            cv_sufix = filename.split('.')[-1]
-            cv_filename = f"{email_filename}.{cv_sufix}"
-            cv.save(os.path.join('uploads', cv_filename))
-
-        return swuped('Your application has been submitted.', link="/?submit_new_CV.", message="Submit another application.")
-
     return render_template('index.html', message=request.args.get('message'))
 
 
@@ -144,7 +106,7 @@ def login():
 
         login_user(user)
 
-        return redirect(url_for('dashboard', message="You have been logged in."))
+        return redirect(url_for('free_page', message="You have been logged in."))
     # Get message from query string
     message = request.args.get('message')
     return render_template('login.html', message=message)
@@ -173,7 +135,7 @@ def register():
         db.session.add(new_user)
         db.session.commit()
         login_user(new_user)
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('free_page', message="You're now registered and logged in!"))
     message = request.args.get('message')
 
     return render_template('register.html', message=message)
@@ -232,12 +194,33 @@ def upgrade():
     return render_template('upgrade.html', client_secret=payment_intent.client_secret, stripe_publishable_key=os.getenv("STRIPE_PUBLISHABLE_KEY"))
 
 
-@app.route('/free_page')
+@app.route('/free_page', methods=['GET', 'POST'])
 @check_message
 @login_required
 def free_page():
-    # return '   <main id="swup" class="transition-fade">This is the free page. <a href="/">Go back.</a></main>'
-    return swuped('This is the free page.', link="/pro_page", message="Go Pro for more!")
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        job_description = request.form.get('job_description')
+        cv = request.files.get('cv')  # Changed to use get method
+
+        if not name or not email:  # Check if name and email are provided
+            return redirect(url_for('index', message="Please provide both your name and email."))
+
+        with open('contacts.csv', 'a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow([name, email, job_description])
+
+        if cv:
+            filename = secure_filename(cv.filename)
+            email_filename = re.sub(r'@', '_at_', email)
+            cv_sufix = filename.split('.')[-1]
+            cv_filename = f"{email_filename}.{cv_sufix}"
+            cv.save(os.path.join('uploads', cv_filename))
+
+        return swuped('Your application has been submitted.', link="/free_page?submit_new_CV.", message="Submit another application.")
+
+    return render_template('free_page.html', message=request.args.get('message'))
 
 
 @app.route('/pro_page')
@@ -245,11 +228,13 @@ def free_page():
 @login_required
 def pro_page():
     if current_user.account_type == 'pro':
-        return swuped('This is the pro page. ' + str(current_user), link="/dashboard", message="Go to the dash")
+        return swuped('This is the pro page ' + str(current_user.name) + '.', link="/dashboard", message="Go to the dash")
 
     else:
         return redirect(url_for('upgrade'))
 
 
 if __name__ == '__main__':
+    app.jinja_env.auto_reload = True
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.run(host='0.0.0.0', port=8000)

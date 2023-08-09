@@ -1,0 +1,10 @@
+{% extends "layout.html" %} {% block title %}{{ content }}{% endblock %}
+<!---->
+{% block content %}
+<h2>{{ content }}</h2>
+{% if note %}
+<h3>{{ note }}</h3>
+{% endif %}
+<a href="{{ link }}">{{ message }}</a>
+{% endblock %}
+

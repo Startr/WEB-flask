@@ -1,0 +1,33 @@
+{% extends "layout.html" %} {% block title %}Contact - Form{% endblock %} {%
+block content %}
+<h2>Submit your CV</h2>
+
+<details>
+  <summary>
+    Need more options? Check out our
+    <a href="/pro_page">Pro-Features for even more.</a>
+  </summary>
+  <ul>
+    <li>Upload multiple CVs a month.</li>
+    <li>Use the AI CV creation tool.</li>
+    <li>Chat with our AI CV assistant.</li>
+  </ul>
+</details>
+<form action="/free_page#submit" method="POST" enctype="multipart/form-data">
+  <label for="name">Name:</label>
+  <input type="text" id="name" name="name" required />
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email" required />
+  <label for="job_description">Job Description:</label>
+  <input
+    for="job_description"
+    id="job_description"
+    name="job_description"
+    required
+  />
+  <label for="cv">CV (PDF or DOCX):</label>
+  <input type="file" id="cv" name="cv" accept=".pdf,.docx" required />
+  <input style="float: right; margin-right: 0;" type="submit" value="Submit" />
+</form>
+
+{% endblock %}
