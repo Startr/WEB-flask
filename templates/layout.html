@@ -52,26 +52,26 @@
   <body class="invisible">
     <header>
       <img
-        src="https://source.unsplash.com/random/901x200/?paint"
+        src="{{ url_for('static', filename='images/example.jpeg') }}"
         alt="Example Image"
         style="--w: 100%"
       />
     </header>
     <nav>
-      <a href="/">Home</a> - <a href="/about">About</a> -
-      <a href="/contact">Contact</a> -
-      <!-- only show these links if the user is not logged in -->
-      {% if not session._user_id %}
+      {% if session._user_id %}
+      <a href="/dashboard">⑈</a> - <a href="/free_page">Process CV</a> -
+      {% else %}
+      <a href="/">Home</a> - {% endif %}<!-- -->
+      <a href="/about">About</a> -
+      <a href="/contact">Contact</a> - {#}only show these links if the user is
+      not logged in {#} {% if not session._user_id %}
       <a href="/register">Register</a> -
       <a href="/login">Login</a>
-      {% endif %}
-      <!-- only show these links if the user is logged in -->
-      {% if session._user_id %}
-      <a href="/free_page">Process CV</a> - <a href="/dashboard">Dash</a> -
-      <!-- only show if the user is not a pro user -->
-      {% if not session._user_account_type == "pro" %}
+      {% endif %} {#} only show these links if the user is logged in {#} {% if
+      session._user_id %} {# only show if the user is not a pro user #} {% if
+      not current_user.account_type  == "pro" %}
       <a href="/upgrade">Upgrade</a> - {% else %}
-      <a href="/pro_page">Pro Page</a> - {% endif %}
+      <a href="/pro_page">Pro Page</a> - {% endif %} {# end if #}
       <a href="/logout" data-no-swup>Logout</a>
       {% endif %}
     </nav>

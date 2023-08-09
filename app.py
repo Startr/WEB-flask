@@ -122,7 +122,7 @@ def login():
 
         login_user(user)
 
-        return redirect(url_for('dashboard', message="You have been logged in."))
+        return redirect(url_for('free_page', message="You have been logged in."))
     # Get message from query string
     message = request.args.get('message')
     return render_template('login.html', message=message)
@@ -151,7 +151,7 @@ def register():
         db.session.add(new_user)
         db.session.commit()
         login_user(new_user)
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('free_page', message="You're now registered and logged in!"))
     message = request.args.get('message')
 
     return render_template('register.html', message=message)
@@ -237,6 +237,7 @@ def free_page():
         return swuped('Your application has been submitted.', link="/?submit_new_CV.", message="Submit another application.")
 
     return render_template('free_page.html', message=request.args.get('message'))
+
 
 @app.route('/pro_page')
 @check_message
