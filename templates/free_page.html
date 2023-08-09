@@ -10,10 +10,10 @@ block content %}
   <ul>
     <li>Upload multiple CVs a month.</li>
     <li>Use the AI CV creation tool.</li>
-    <li>Talk to our AI CV assistant.</li>
+    <li>Chat with our AI CV assistant.</li>
   </ul>
 </details>
-<form action="/#submit" method="POST" enctype="multipart/form-data">
+<form action="/free_page#submit" method="POST" enctype="multipart/form-data">
   <label for="name">Name:</label>
   <input type="text" id="name" name="name" required />
   <label for="email">Email:</label>
@@ -27,8 +27,7 @@ block content %}
   />
   <label for="cv">CV (PDF or DOCX):</label>
   <input type="file" id="cv" name="cv" accept=".pdf,.docx" required />
-  <input type="submit" value="Submit" />
+  <input style="float: right; margin-right: 0;" type="submit" value="Submit" />
 </form>
 
-<a href="/pro_page">Go Pro Now!</a>
 {% endblock %}

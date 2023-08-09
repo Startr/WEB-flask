@@ -26,6 +26,8 @@ app.secret_key = os.getenv("FLASK_SECRET_KEY")
 
 app.config.from_mapping(config)
 
+
+
 db = SQLAlchemy(app)
 
 if not os.path.exists('uploads'):
@@ -216,7 +218,7 @@ def free_page():
             cv_filename = f"{email_filename}.{cv_sufix}"
             cv.save(os.path.join('uploads', cv_filename))
 
-        return swuped('Your application has been submitted.', link="/?submit_new_CV.", message="Submit another application.")
+        return swuped('Your application has been submitted.', link="/free_page?submit_new_CV.", message="Submit another application.")
 
     return render_template('free_page.html', message=request.args.get('message'))
 
@@ -226,7 +228,7 @@ def free_page():
 @login_required
 def pro_page():
     if current_user.account_type == 'pro':
-        return swuped('This is the pro page. ' + str(current_user), link="/dashboard", message="Go to the dash")
+        return swuped('This is the pro page ' + str(current_user.name) + '.', link="/dashboard", message="Go to the dash")
 
     else:
         return redirect(url_for('upgrade'))
