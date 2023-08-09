@@ -2,9 +2,9 @@
 
 # Your Startr Web App
 
-v0.1.0
+v0.2.0
 
-# WEB-Flask: 256 Lines of Python Goodness 🚀
+# WEB-Flask: less than 256 Lines of Python Goodness 🚀
 
 A simple yet powerful web application built with Flask and sprinkled with love... 
 
