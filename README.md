@@ -6,6 +6,10 @@ v0.1.0
 
 # WEB-Flask: 256 Lines of Python Goodness 🚀
 
+With Startr/WEB-Flast you can turn your ideas into a solid Minimal Viable Product in less than a weekend. 
+
+With a little Python code you can tweak our micro framework to do anything.
+
 A simple yet powerful web application built with Flask and sprinkled with love... 
 
 🌟🌟🌟 Please **fork** and leave a ⭐ star if you find this repo useful. Thank you! 🌟🌟🌟
@@ -29,15 +33,15 @@ We license our projects under the [AGPL-3.0](https://choosealicense.com/licenses
 
 Here's what you'll find in this awesome project:
 
-- ✨ Super smooth page transitions
-- 💳 Stripe integration
+- ✨ Quick Site with super smooth page transitions
 - 🔐 User authentication
 - 👥 Members only page logic
 - 🎯 Pro members only page logic
 - 📝 Contact form
 - 📂 File upload
 - 💵 Billing
-- 🔄 Subscriptions
+  - 💳 Stripe integration
+  - 🔄 Subscriptions
 - 📊 User dashboard
 - 👩‍💼 User roles
 - 🔑 Login
