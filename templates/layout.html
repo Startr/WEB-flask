@@ -51,11 +51,11 @@
   </head>
   <body class="invisible">
     <header>
-      <img
+      {#<img
         src="{{ url_for('static', filename='images/example.jpeg') }}"
         alt="Example Image"
         style="--w: 100%"
-      />
+      />#}
     </header>
     <nav>
       {% if session._user_id %}

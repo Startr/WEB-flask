@@ -37,7 +37,10 @@
   --blue: hsl(224, 47%, 52%);
   --orange: hsl(33, 79%, 36%);
   --red: hsl(11, 95%, 45%);
-  --primary: var(--blue);
+  --purple: hsl(265, 87%, 56%);
+  --pink: hsl(322, 89%, 60%);
+  --yellow: hsl(45, 100%, 50%);
+  --primary: var(--purple);
   --secondary: var(--green);
   --background: var(--grey);
   --background-alt: hsl(210, 40%, 98%);
@@ -436,7 +439,6 @@ header {
 @media screen and (min-width: calc(80rem - 2rem)) {
   header {
     transform: translate(calc(((100vw - 80rem) / -2) - 0rem));
-    min-height: 20rem;
   }
 }
 footer {
