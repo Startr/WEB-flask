@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="utf-8" />
     <meta http-equiv="Permissions-Policy" content="interest-cohort=()" />
-    <mete
+    <meta
       name="description"
       content="A simple website built with Flask and Swup.js"
     />
@@ -26,11 +26,13 @@
     utility-first CSS framework for rapidly building custom user interfaces.
     Avoiding class bloat, Startr Style provides a minimal set of styles and
     robust utilities using variables and logic to cover a wide variety of use
-    cases. #}
+    cases. #} {#
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/startr.css') }}"
     />
+    #}
+    <link rel="stylesheet" href="https://startr.style/style.css" />
     <link
       rel="shortcut icon"
       href="{{ url_for('static', filename='favicon/favicon.ico') }}"
@@ -49,27 +51,25 @@
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     {% endblock %}
   </head>
-  <body class="invisible">
-    <header>
-      {#<img
+  <body class="invisible" style="--d:flex; --fd: column; --minh: 100vh;">
+    {#<header>
+      <img
         src="{{ url_for('static', filename='images/example.jpeg') }}"
         alt="Example Image"
         style="--w: 100%"
-      />#}
-    </header>
+      />
+    </header> #}
     <nav>
       {% if session._user_id %}
-      <a href="/dashboard">⑈</a> - <a href="/free_page">Process CV</a> -
-      {% else %}
-      <a href="/">Home</a> - {% endif %}<!-- -->
-      <a href="/about">About</a> -
-      <a href="/contact">Contact</a> - {#}only show these links if the user is
-      not logged in {#} {% if not session._user_id %}
+      <a href="/dashboard">⑈</a> - <a href="/free_page">Process CV</a> - {% else
+      %} <a href="/">Home</a> - {% endif %}<!-- -->
+      <a href="/about">About</a> - <a href="/contact">Contact</a> - {#}only show
+      these links if the user is not logged in {#} {% if not session._user_id %}
       <a href="/register">Register</a> -
       <a href="/login">Login</a>
       {% endif %} {#} only show these links if the user is logged in {#} {% if
       session._user_id %} {# only show if the user is not a pro user #} {% if
-      not current_user.account_type  == "pro" %}
+      not current_user.account_type == "pro" %}
       <a href="/upgrade">Upgrade</a> - {% else %}
       <a href="/pro_page">Pro Page</a> - {% endif %} {# end if #}
       <a href="/logout" data-no-swup>Logout</a>
@@ -80,5 +80,40 @@
     <main id="swup" class="transition-fade">
       {% block content %} {% endblock %}
     </main>
+    <footer class="footer"  style="--mt: auto;">
+      <div style="--d: flex; --jc: center; --fd: column">
+        <div style="--ta: center; --mb: 1rem">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <div style="--m: auto; --ta: center; --op: 0.7">
+          <p style="--mb: 0">
+            Carefully crafted by the
+            <a href="https://startr.ca">Startr Team</a> with the help of
+            <a href="https://github.com/Startr/WEB-flask/graphs/contributors"
+              >our contributors</a
+            >.
+          </p>
+          <p style="--mb:0">
+            Startr Style licensed
+            <a
+              href="https://github.com/Startr/WEB-flask/blob/master/LICENSE.md"
+              target="_blank"
+              rel="license noopener"
+              >AGPL</a
+            >,
+             docs
+            <a
+              href="https://creativecommons.org/licenses/by/3.0/"
+              target="_blank"
+              rel="license noopener"
+              >CC</a
+            >.
+          </p>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>
