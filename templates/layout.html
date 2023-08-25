@@ -18,6 +18,7 @@
     <script src="{{ url_for('static', filename='js/swup.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/swup-forms-plugin.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/swup-scripts-plugin.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/swup-progress-plugin.js') }}"></script>
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}"
@@ -44,6 +45,15 @@
             formSelector: "form:not([data-no-swup])",
           }),
           new SwupScriptsPlugin({ head: true, body: true }),
+          new SwupProgressPlugin(
+            {
+              className: 'swup-progress-bar',
+              transition: 300,
+              delay: 0,
+              initialValue: 0.25,
+              finishAnimation: true
+            }
+          ),
         ],
       });
     </script>
@@ -51,7 +61,7 @@
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     {% endblock %}
   </head>
-  <body class="invisible" style="--d:flex; --fd: column; --minh: 100vh;">
+  <body class="invisible" style="--d:flex; --fd: column; --minh: 100vh; --maxw-md: 70rem;">
     {#<header>
       <img
         src="{{ url_for('static', filename='images/example.jpeg') }}"
@@ -59,6 +69,28 @@
         style="--w: 100%"
       />
     </header> #}
+    <header style="
+        --pos: relative;
+        --z: 1;
+        --w-xl: calc(100vw + 1rem);
+        --t-xl: translate(calc(((100vw - var(--maxw-md)) / -2) - 0rem));
+      ">
+      <div style="
+          --d: flex;
+          --jc: space-between;
+          --ai: center;
+          --mb: 2rem;
+          --mt: 1rem;
+          --pr-xl: 1rem;
+        ">
+        <a href="/"><img alt="Startr/Style" src="{{ url_for('static', filename='images/Startr_Logo.png') }}" style="--w: 6rem;  --p: 0.8rem" /></a>
+        <nav aria-label="Navigation" style="--ta: right">
+          <a href="#learn"><button class="white">Get Startrd</button></a>
+          <a href="#components"><button class="white">Amazing Components</button></a>
+          <a href="/docs/utilities/"><button class="white">Utilities</button></a>
+        </nav>
+      </div>
+    </header>
     <nav>
       {% if session._user_id %}
       <a href="/dashboard">⑈</a> - <a href="/free_page">Process CV</a> - {% else

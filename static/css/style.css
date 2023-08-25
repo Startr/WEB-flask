@@ -34,3 +34,8 @@ html.is-animating .transition-fade {
   animation-fill-mode: forwards;
  /* animation-duration: 0.4s; */
 }
+
+.swup-progress-bar {
+  height: 0.6rem;
+  background-color: rgb(87, 1, 157);
+}
