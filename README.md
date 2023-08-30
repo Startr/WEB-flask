@@ -72,6 +72,12 @@ You are all set to embark on an exciting journey with WEB-Flask. Get ready to bu
 
 ## Installation
 
+**Note:** It's a great idea to use a tool like autoenv to manage spinning up your app's env while doing development.
+
+```bash
+curl -#fLo- 'https://raw.githubusercontent.com/hyperupcall/autoenv/master/scripts/install.sh' | sh
+````
+
 ```bash
 pip install -r requirements.txt
 
