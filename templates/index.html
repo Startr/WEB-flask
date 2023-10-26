@@ -1,7 +1,18 @@
 {% extends "layout.html" %} {% block title %} Contact - Form {% endblock %}
 <!---->
 {% block content %}
-<h2>Submit your CV</h2>
+<div style="--d: flex; --fd:column">
+<h1>Introducing Startr Web Kit!</h1> 
+<p>Our comprehensive package is designed to help you swiftly create and deploy web applications, with no hidden costs. You&apos;ll be amazed at how easy it is to build public pages, set up a members-only section, enable pro features, and seamlessly integrate billing and checkout functionalities&mdash;all with less than 256 lines of code.</p>
+
+<p>With Startr Web Kit, your development team can transform from zero to a fully functional core business logic in just one weekend. Best of all, don't burn your capital on software during your product-market-fit search phase. There's no hidden costs.</p>
+
+<p>Our kit leverages the power of our exceptional open-source libraries, combined with popular online payment service providers, to assemble multiuser applications that actually work. The technology stack we provide, which includes top-notch tools like SQLite, Python, and NGINX, empowers you to effortlessly manage more than 10,000 simultaneous connections, all while utilizing mere megabytes of memory.</p>
+</div>
+
+
+<div>
+<h2>Example App - Submit your CV</h2>
 <p>Fill out the form below to submit your CV.</p>
 
 <form action="/free_page" method="POST" enctype="multipart/form-data">
